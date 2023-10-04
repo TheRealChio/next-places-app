@@ -23,19 +23,22 @@ const FixedLink = styled(StyledLink)`
   right: 50px;
 `;
 export default function Home() {
-  const { data } = useSWR("/api/places", { fallbackData: [] });
+  const { data, isLoading } = useSWR("/api/places");
+
+  if (isLoading) <p>Loading...</p>;
+  if (!data) return;
 
   return (
     <>
       <List role="list">
         {data.map((place) => {
           return (
-            <ListItem key={place.id}>
+            <ListItem key={place._id}>
               <Card
                 name={place.name}
                 image={place.image}
                 location={place.location}
-                id={place.id}
+                id={place._id}
               />
             </ListItem>
           );
